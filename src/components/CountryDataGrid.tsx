@@ -1,9 +1,11 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { ColDef, GridOptions } from "ag-grid-community";
+import { ColDef, GridOptions, RowClickedEvent } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { CountriesData } from "../types";
+import FavouriteButton from "./FavouriteButton";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const API_ENDPOINT = "https://restcountries.com/v3.1/all";
 
@@ -23,8 +25,19 @@ const countryCellRenderer = ({ data }) => {
   );
 };
 
+const actionsCellRenderer = ({ data, onFavourite }) => {
+  let countryCode = data.cca2;
+  return (
+    <div className="grid-actions">
+      <FavouriteButton countryCode={countryCode} onFavourite={onFavourite} />
+    </div>
+  );
+};
+
 const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
   const [rowData, setRowData] = useState([]);
+  const [favourites, setFavourites] = useLocalStorage("favourites", []);
+
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -42,6 +55,18 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
     };
     fetchGridData();
   }, []);
+
+  const onFavourite = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    countryCode: string
+  ) => {
+    e.stopPropagation();
+    if (!favourites.includes(countryCode)) {
+      setFavourites((prev) => [...prev, countryCode]);
+    } else {
+      setFavourites(favourites.filter((fav) => fav !== countryCode));
+    }
+  };
 
   const columnDefs: ColDef[] = [
     {
@@ -76,6 +101,14 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
       valueGetter: (p) =>
         p.data.currencies ? Object.keys(p.data.currencies) : "-",
     },
+    {
+      headerName: "Actions",
+      field: "actions",
+      cellRenderer: actionsCellRenderer,
+      cellRendererParams: {
+        onFavourite,
+      },
+    },
   ];
 
   const gridOptions: GridOptions<CountriesData> = {
@@ -90,6 +123,8 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
     columnDefs: columnDefs,
     animateRows: true,
   };
+
+  const onRowClicked = useCallback((event: RowClickedEvent) => {}, []);
 
   return (
     <div
