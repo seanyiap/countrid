@@ -16,10 +16,31 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
     {
       headerName: "Name",
       field: "name.common",
+      sort: "asc",
     },
     {
       headerName: "Capital",
       field: "capital",
+    },
+    {
+      headerName: "Languages",
+      field: "languages",
+      valueGetter: (p) =>
+        p.data.languages ? Object.values(p.data.languages) : "-",
+    },
+    {
+      headerName: "Population",
+      field: "population",
+      valueFormatter: (p) => {
+        let num = parseFloat(p.data.population) ?? 0;
+        return num.toLocaleString("en-US");
+      },
+    },
+    {
+      headerName: "Currencies",
+      field: "currencies",
+      valueGetter: (p) =>
+        p.data.currencies ? Object.keys(p.data.currencies) : "-",
     },
   ];
 
