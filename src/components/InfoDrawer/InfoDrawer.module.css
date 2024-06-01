@@ -1,0 +1,18 @@
+.drawer {
+  width: 35%;
+  border-left: solid 1px var(--mantine-color-dimmed);
+}
+
+.drawer-header {
+  padding: 10px 20px;
+}
+
+.drawer-content {
+  padding: 0 20px;
+}
+
+.drawer-close-btn {
+  position: "absolute";
+  top: 5;
+  right: 5;
+}
