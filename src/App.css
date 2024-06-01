@@ -1,3 +1,7 @@
+.app-wrapper {
+  display: flex;
+}
+
 button {
   border: none;
 

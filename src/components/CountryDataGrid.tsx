@@ -9,7 +9,9 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const API_ENDPOINT = "https://restcountries.com/v3.1/all";
 
-interface CountryDataGridProps {}
+interface CountryDataGridProps {
+  handleSelect: (country: CountriesData) => void;
+}
 
 const countryCellRenderer = ({ data }) => {
   return (
@@ -34,10 +36,10 @@ const actionsCellRenderer = ({ data, onFavourite }) => {
   );
 };
 
-const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
+const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
   const [rowData, setRowData] = useState([]);
   const [favourites, setFavourites] = useLocalStorage("favourites", []);
-
+  const [, setViewed] = useLocalStorage("viewed", {});
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -79,6 +81,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
     {
       headerName: "Capital",
       field: "capital",
+      valueGetter: (p) => p.data.capital ?? "-",
     },
     {
       headerName: "Languages",
@@ -124,13 +127,36 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
     animateRows: true,
   };
 
-  const onRowClicked = useCallback((event: RowClickedEvent) => {}, []);
+  const onRowClicked = useCallback(
+    (event: RowClickedEvent) => {
+      const data = event.data;
+      const node = event.node;
+
+      if (node.isSelected()) {
+        handleSelect(node.data);
+        setViewed((prev) => {
+          if (data.name.common in prev) {
+            return {
+              ...prev,
+              [data.name.common]: (prev[data.name.common] += 1),
+            };
+          } else {
+            return {
+              ...prev,
+              [data.name.common]: (prev[data.name.common] = 1),
+            };
+          }
+        });
+      }
+    },
+    [handleSelect, setViewed]
+  );
 
   return (
     <div
-      className="ag-theme-alpine"
+      className="ag-theme-alpine-dark"
       style={{
-        height: "70vh",
+        height: "75vh",
         width: "100%",
       }}
     >
@@ -141,6 +167,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({}) => {
         columnDefs={columnDefs}
         pagination={true}
         paginationPageSize={20}
+        onRowClicked={onRowClicked}
       />
     </div>
   );
