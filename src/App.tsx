@@ -1,7 +1,12 @@
 import "./App.css";
+import CountryDataGrid from "./components/CountryDataGrid";
 
 function App() {
-  return <h1>Hello</h1>;
+  return (
+    <>
+      <CountryDataGrid />
+    </>
+  );
 }
 
 export default App;
