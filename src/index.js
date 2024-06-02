@@ -4,6 +4,9 @@ import "./index.css";
 import App from "./App";
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +24,8 @@ root.render(
     withGlobalStyles
     withNormalizeCSS
   >
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </MantineProvider>
 );

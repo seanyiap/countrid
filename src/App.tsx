@@ -61,12 +61,18 @@ function App() {
 
   return (
     <Flex>
-      <Container fluid p="lg" flex="1" style={{ position: "relative" }}>
+      <Container
+        fluid
+        px="xl"
+        py="md"
+        flex="1"
+        style={{ position: "relative" }}
+      >
         <Flex py="md" direction="column">
           <Text className="landing-title" ta="center" variant="gradient">
             Countrid
           </Text>
-          <Text size="md" ta="center">
+          <Text size="lg" ta="center">
             All countries in a grid - that simple.
           </Text>
         </Flex>
@@ -74,7 +80,7 @@ function App() {
           style={{ position: "absolute", top: 10, right: 10 }}
         />
 
-        <Container fluid py="xs">
+        <Container fluid>
           <CountryDataGrid
             handleSelect={handleSelect}
             handleFavourite={handleFavourite}
@@ -105,23 +111,25 @@ function App() {
           onClose={closeDrawer}
         >
           <Image
-            fit="contain"
             py="xs"
             src={`https://flagcdn.com/${selectedCountry.cca2.toLowerCase()}.svg`}
             alt={`${selectedCountry.name.common} flag`}
           />
 
           <Stack>
-            <Text>Capital: {selectedCountry.capital ?? "-"}</Text>
             <Text>
-              Population: {selectedCountry.population.toLocaleString("en-US")}
+              <b>Capital:</b> {selectedCountry.capital ?? "-"}
             </Text>
             <Text>
-              Region: {selectedCountry.region}{" "}
+              <b>Population:</b>{" "}
+              {selectedCountry.population.toLocaleString("en-US")}
+            </Text>
+            <Text>
+              <b>Region:</b> {selectedCountry.region}{" "}
               {selectedCountry.subregion && `(${selectedCountry.subregion})`}
             </Text>
             <Text>
-              Languages:{" "}
+              <b>Languages:</b>{" "}
               {selectedCountry.languages &&
               Object.values(selectedCountry.languages).length ? (
                 <List>
@@ -134,7 +142,7 @@ function App() {
               )}
             </Text>
             <Text>
-              Currencies:{" "}
+              <b>Currencies:</b>{" "}
               {selectedCountry.currencies ? (
                 <List>
                   {Object.values(selectedCountry.currencies).map((currency) => (

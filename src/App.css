@@ -14,11 +14,15 @@ button {
     var(--mantine-color-blue-filled) 0%,
     var(--mantine-color-cyan-filled) 100%
   );
-  font-size: 8rem !important;
+  font-size: 10rem !important;
   font-weight: 900 !important;
   line-height: 1 !important;
 
   @media (max-width: 62em) {
+    font-size: 8rem !important;
+  }
+
+  @media (max-width: 48em) {
     font-size: 6rem !important;
   }
 }

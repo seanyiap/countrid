@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback } from "react";
+import { FC, useCallback } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { ColDef, GridOptions, RowClickedEvent } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { CountriesData } from "../../types";
 import FavouriteButton from "../Buttons/FavouriteButton";
 import { useMantineColorScheme, Group } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 
 const API_ENDPOINT = "https://restcountries.com/v3.1/all";
 
@@ -40,29 +41,38 @@ const actionsCellRenderer = ({ data, handleFavourite }) => {
   );
 };
 
+const loadingCellRenderer = ({ loadingMessage }) => {
+  return (
+    <div
+      className="ag-custom-loading-cell"
+      style={{ paddingLeft: "10px", lineHeight: "25px" }}
+    >
+      <i className="fas fa-spinner fa-pulse"></i> <span> {loadingMessage}</span>
+    </div>
+  );
+};
+
+const fetchGridData = async () => {
+  try {
+    const response = await fetch(API_ENDPOINT);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (err) {
+    throw new Error("Failed to fetch countries. Will retry for a few times.");
+  }
+};
+
 const CountryDataGrid: FC<CountryDataGridProps> = ({
   handleSelect,
   handleFavourite,
 }) => {
   const { colorScheme } = useMantineColorScheme();
-  const [rowData, setRowData] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchGridData = async () => {
-      try {
-        const response = await fetch(API_ENDPOINT);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setRowData(data);
-      } catch (e) {
-        setError(e.message);
-      }
-    };
-    fetchGridData();
-  }, []);
+  const { data, error, isLoading, isError } = useQuery({
+    queryKey: ["gridData"],
+    queryFn: fetchGridData,
+  });
 
   const columnDefs: ColDef[] = [
     {
@@ -122,6 +132,10 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({
     rowData: [],
     columnDefs: columnDefs,
     animateRows: true,
+    noRowsOverlayComponent: loadingCellRenderer,
+    noRowsOverlayComponentParams: {
+      loadingMessage: "One moment please...",
+    },
   };
 
   const onRowClicked = useCallback(
@@ -147,11 +161,12 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({
       <AgGridReact
         gridOptions={gridOptions}
         rowSelection={"single"}
-        rowData={rowData}
+        rowData={data}
         columnDefs={columnDefs}
         pagination={true}
         paginationPageSize={20}
         onRowClicked={onRowClicked}
+        reactiveCustomComponents
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StarBorderIcon, YellowStarIcon } from "../../icons";
+import { StarBorderIcon, YellowStarIcon } from "../../misc/icons";
 import { getSavedValue } from "../../hooks/useLocalStorage";
 
 interface FavouriteButtonProps {
