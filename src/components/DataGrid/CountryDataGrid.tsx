@@ -106,6 +106,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({
         handleFavourite,
       },
       flex: -1,
+      floatingFilter: false,
     },
   ];
 
