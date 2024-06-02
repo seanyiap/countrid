@@ -11,8 +11,14 @@
   padding: 0 20px;
 }
 
+.drawer-title {
+  @media (max-width: 48em) {
+    font-size: var(--mantine-h5-font-size) !important;
+  }
+}
+
 .drawer-close-btn {
-  position: "absolute";
-  top: 5;
-  right: 5;
+  position: absolute !important;
+  top: 5px;
+  right: 10px;
 }

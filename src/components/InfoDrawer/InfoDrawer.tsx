@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classes from "./InfoDrawer.module.css";
-import { Group, Text, CloseButton, ScrollArea } from "@mantine/core";
+import { Group, Title, CloseButton, ScrollArea } from "@mantine/core";
 import { CountriesData } from "../../types";
 
 interface InfoDrawerProps {
@@ -21,10 +21,10 @@ const InfoDrawer: FC<InfoDrawerProps> = ({
   return (
     <div className={classes.drawer}>
       <ScrollArea h="100vh">
-        <Group className={classes["drawer-header"]}>
-          <Text size="xl" fw={500} flex="1">
+        <Group className={classes["drawer-header"]} justify="space-between">
+          <Title order={3} className={classes["drawer-title"]}>
             {title}
-          </Text>
+          </Title>
           <CloseButton
             className={classes["drawer-close-btn"]}
             title="Close"

@@ -62,12 +62,10 @@ function App() {
           onClose={closeDrawer}
         >
           <Image
-            // border='0'
-            // width="15"
-            // height="10"
+            fit="contain"
             py="xs"
-            style={{ marginBottom: 2 }}
-            src={selectedCountry.flags.png}
+            src={`https://flagcdn.com/${selectedCountry.cca2.toLowerCase()}.svg`}
+            alt={`${selectedCountry.name.common} flag`}
           />
 
           <Stack>

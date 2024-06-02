@@ -18,10 +18,10 @@ const countryCellRenderer = ({ data }) => {
   return (
     <span>
       <img
-        width="20px"
+        width="20"
         alt={`${data.name.common} flag`}
         style={{ marginRight: 8 }}
-        src={`https://flagcdn.com/h20/${data.cca2.toLowerCase()}.png`}
+        src={`https://flagcdn.com/${data.cca2.toLowerCase()}.svg`}
       />
       {data.name.common}
     </span>
