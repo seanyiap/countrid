@@ -5,13 +5,16 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { CountriesData } from "../types";
 import FavouriteButton from "./FavouriteButton";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useMantineColorScheme, Group } from "@mantine/core";
 
 const API_ENDPOINT = "https://restcountries.com/v3.1/all";
 
 interface CountryDataGridProps {
   handleSelect: (country: CountriesData) => void;
+  handleFavourite: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    country: string
+  ) => void;
 }
 
 const countryCellRenderer = ({ data }) => {
@@ -28,20 +31,21 @@ const countryCellRenderer = ({ data }) => {
   );
 };
 
-const actionsCellRenderer = ({ data, onFavourite }) => {
-  let countryCode = data.cca2;
+const actionsCellRenderer = ({ data, handleFavourite }) => {
+  let country = data.name.common;
   return (
     <Group gap="0" justify="center" className="grid-actions">
-      <FavouriteButton countryCode={countryCode} onFavourite={onFavourite} />
+      <FavouriteButton country={country} handleFavourite={handleFavourite} />
     </Group>
   );
 };
 
-const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+const CountryDataGrid: FC<CountryDataGridProps> = ({
+  handleSelect,
+  handleFavourite,
+}) => {
+  const { colorScheme } = useMantineColorScheme();
   const [rowData, setRowData] = useState([]);
-  const [favourites, setFavourites] = useLocalStorage("favourites", []);
-  const [, setViewed] = useLocalStorage("viewed", {});
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -59,18 +63,6 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
     };
     fetchGridData();
   }, []);
-
-  const onFavourite = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    countryCode: string
-  ) => {
-    e.stopPropagation();
-    if (!favourites.includes(countryCode)) {
-      setFavourites((prev) => [...prev, countryCode]);
-    } else {
-      setFavourites(favourites.filter((fav) => fav !== countryCode));
-    }
-  };
 
   const columnDefs: ColDef[] = [
     {
@@ -111,7 +103,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
       field: "actions",
       cellRenderer: actionsCellRenderer,
       cellRendererParams: {
-        onFavourite,
+        handleFavourite,
       },
       flex: -1,
     },
@@ -124,6 +116,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
       sortable: true,
       minWidth: 100,
       filter: true,
+      floatingFilter: true,
     },
     rowData: [],
     columnDefs: columnDefs,
@@ -136,23 +129,10 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
       const node = event.node;
 
       if (node.isSelected()) {
-        handleSelect(node.data);
-        setViewed((prev) => {
-          if (data.name.common in prev) {
-            return {
-              ...prev,
-              [data.name.common]: (prev[data.name.common] += 1),
-            };
-          } else {
-            return {
-              ...prev,
-              [data.name.common]: (prev[data.name.common] = 1),
-            };
-          }
-        });
+        handleSelect(data);
       }
     },
-    [handleSelect, setViewed]
+    [handleSelect]
   );
 
   return (
