@@ -14,6 +14,7 @@ import {
   Title,
   Text,
 } from "@mantine/core";
+import ThemeToggleButton from "./components/ThemeToggleButton";
 
 function App() {
   const [isDrawerOpen, { open: openDrawer, close: closeDrawer }] =
@@ -30,6 +31,7 @@ function App() {
   return (
     <Flex>
       <Container fluid p="lg" flex="1" style={{ position: "relative" }}>
+        <ThemeToggleButton />
         <CountryDataGrid handleSelect={handleSelect} />
       </Container>
 
