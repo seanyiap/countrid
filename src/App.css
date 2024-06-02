@@ -8,6 +8,21 @@ button {
   padding: 0;
 }
 
+.landing-title {
+  --text-gradient: linear-gradient(
+    45deg,
+    var(--mantine-color-blue-filled) 0%,
+    var(--mantine-color-cyan-filled) 100%
+  );
+  font-size: 8rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+
+  @media (max-width: 62em) {
+    font-size: 6rem !important;
+  }
+}
+
 .icon {
   --icon-color: currentColor;
   --icon-size: 24px;

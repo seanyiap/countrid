@@ -2,9 +2,11 @@ import { useMantineColorScheme, ActionIcon } from "@mantine/core";
 import { FC } from "react";
 import { SunIcon, MoonIcon } from "../icons";
 
-interface ThemeToggleButtonProps {}
+interface ThemeToggleButtonProps {
+  style?: React.CSSProperties;
+}
 
-const ThemeToggleButton: FC<ThemeToggleButtonProps> = ({}) => {
+const ThemeToggleButton: FC<ThemeToggleButtonProps> = ({ ...props }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
@@ -13,6 +15,7 @@ const ThemeToggleButton: FC<ThemeToggleButtonProps> = ({}) => {
       color={colorScheme === "dark" ? "yellow" : "blue"}
       onClick={() => toggleColorScheme()}
       title="Toggle color scheme"
+      {...props}
     >
       {colorScheme === "dark" ? <SunIcon /> : <MoonIcon />}
     </ActionIcon>

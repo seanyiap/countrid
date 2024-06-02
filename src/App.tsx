@@ -31,7 +31,18 @@ function App() {
   return (
     <Flex>
       <Container fluid p="lg" flex="1" style={{ position: "relative" }}>
-        <ThemeToggleButton />
+        <Flex py="md" direction="column">
+          <Text className="landing-title" ta="center" variant="gradient">
+            Countrid
+          </Text>
+          <Text size="md" c="dimmed" ta="center">
+            All countries in a grid - that simple.
+          </Text>
+        </Flex>
+        <ThemeToggleButton
+          style={{ position: "absolute", top: 10, right: 10 }}
+        />
+
         <CountryDataGrid handleSelect={handleSelect} />
       </Container>
 
@@ -39,9 +50,7 @@ function App() {
         <InfoDrawer
           title={
             <Group>
-              <Title order={3} className="drawer-title">
-                {selectedCountry.name.common}
-              </Title>
+              {selectedCountry.name.common}
               {/* <FavouriteButton
                 countryCode={selectedCountry.cca2.toLowerCase()}
                 onFavourite={onFavourite}
