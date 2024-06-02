@@ -11,10 +11,14 @@ import {
   Image,
   List,
   Stack,
-  Title,
   Text,
+  SimpleGrid,
 } from "@mantine/core";
 import ThemeToggleButton from "./components/ThemeToggleButton";
+import Favourited from "./components/Cards/Favourited";
+import Viewed from "./components/Cards/Viewed";
+import FavouriteButton from "./components/FavouriteButton";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
   const [isDrawerOpen, { open: openDrawer, close: closeDrawer }] =
@@ -22,10 +26,37 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<CountriesData | null>(
     null
   );
+  const [favourites, setFavourites] = useLocalStorage("favourites", []);
+  const [, setViewed] = useLocalStorage("viewed", {});
 
   const handleSelect = (country: CountriesData) => {
     setSelectedCountry(country);
     openDrawer();
+    setViewed((prev) => {
+      if (country.name.common in prev) {
+        return {
+          ...prev,
+          [country.name.common]: (prev[country.name.common] += 1),
+        };
+      } else {
+        return {
+          ...prev,
+          [country.name.common]: (prev[country.name.common] = 1),
+        };
+      }
+    });
+  };
+
+  const handleFavourite = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    country: string
+  ) => {
+    e.stopPropagation();
+    if (!favourites.includes(country)) {
+      setFavourites((prev) => [...prev, country]);
+    } else {
+      setFavourites(favourites.filter((fav) => fav !== country));
+    }
   };
 
   return (
@@ -35,7 +66,7 @@ function App() {
           <Text className="landing-title" ta="center" variant="gradient">
             Countrid
           </Text>
-          <Text size="md" c="dimmed" ta="center">
+          <Text size="md" ta="center">
             All countries in a grid - that simple.
           </Text>
         </Flex>
@@ -43,7 +74,19 @@ function App() {
           style={{ position: "absolute", top: 10, right: 10 }}
         />
 
-        <CountryDataGrid handleSelect={handleSelect} />
+        <Container fluid py="xs">
+          <CountryDataGrid
+            handleSelect={handleSelect}
+            handleFavourite={handleFavourite}
+          />
+        </Container>
+
+        <Container fluid p="md">
+          <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <Favourited />
+            <Viewed />
+          </SimpleGrid>
+        </Container>
       </Container>
 
       {selectedCountry && isDrawerOpen && (
@@ -51,10 +94,10 @@ function App() {
           title={
             <Group>
               {selectedCountry.name.common}
-              {/* <FavouriteButton
-                countryCode={selectedCountry.cca2.toLowerCase()}
-                onFavourite={onFavourite}
-              /> */}
+              <FavouriteButton
+                country={selectedCountry.name.common}
+                handleFavourite={handleFavourite}
+              />
             </Group>
           }
           data={selectedCountry}
@@ -74,7 +117,8 @@ function App() {
               Population: {selectedCountry.population.toLocaleString("en-US")}
             </Text>
             <Text>
-              Region: {selectedCountry.region} ({selectedCountry.subregion})
+              Region: {selectedCountry.region}{" "}
+              {selectedCountry.subregion && `(${selectedCountry.subregion})`}
             </Text>
             <Text>
               Languages:{" "}

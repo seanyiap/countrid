@@ -3,25 +3,25 @@ import { StarBorderIcon, YellowStarIcon } from "../icons";
 import { getSavedValue } from "../hooks/useLocalStorage";
 
 interface FavouriteButtonProps {
-  countryCode: string;
-  onFavourite: (
+  country: string;
+  handleFavourite: (
     e: React.MouseEvent<HTMLButtonElement>,
-    countryCode: string
+    country: string
   ) => void;
 }
 
 const FavouriteButton: FC<FavouriteButtonProps> = ({
-  countryCode,
-  onFavourite,
+  country,
+  handleFavourite,
 }) => {
-  const favourites = getSavedValue("favourites");
-  let isFavourite = favourites.includes(countryCode);
+  const favourites = getSavedValue("favourites", []);
+  let isFavourite = favourites.includes(country);
 
   return (
     <button
       name="favourite"
       className="icon-button"
-      onClickCapture={(e) => onFavourite(e, countryCode)}
+      onClickCapture={(e) => handleFavourite(e, country)}
     >
       {isFavourite ? <YellowStarIcon /> : <StarBorderIcon />}
     </button>
