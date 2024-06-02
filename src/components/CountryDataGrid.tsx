@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { CountriesData } from "../types";
 import FavouriteButton from "./FavouriteButton";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useMantineColorScheme, Group } from "@mantine/core";
 
 const API_ENDPOINT = "https://restcountries.com/v3.1/all";
 
@@ -30,13 +31,14 @@ const countryCellRenderer = ({ data }) => {
 const actionsCellRenderer = ({ data, onFavourite }) => {
   let countryCode = data.cca2;
   return (
-    <div className="grid-actions">
+    <Group gap="0" justify="center" className="grid-actions">
       <FavouriteButton countryCode={countryCode} onFavourite={onFavourite} />
-    </div>
+    </Group>
   );
 };
 
 const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [rowData, setRowData] = useState([]);
   const [favourites, setFavourites] = useLocalStorage("favourites", []);
   const [, setViewed] = useLocalStorage("viewed", {});
@@ -111,6 +113,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
       cellRendererParams: {
         onFavourite,
       },
+      flex: -1,
     },
   ];
 
@@ -154,7 +157,7 @@ const CountryDataGrid: FC<CountryDataGridProps> = ({ handleSelect }) => {
 
   return (
     <div
-      className="ag-theme-alpine-dark"
+      className={`ag-theme-alpine${colorScheme === "dark" ? "-dark" : ""}`}
       style={{
         height: "75vh",
         width: "100%",

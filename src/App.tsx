@@ -6,6 +6,7 @@ import InfoDrawer from "./components/InfoDrawer/InfoDrawer";
 import { CountriesData } from "./types";
 import {
   Container,
+  Flex,
   Group,
   Image,
   List,
@@ -27,8 +28,11 @@ function App() {
   };
 
   return (
-    <div className="app-wrapper">
-      <CountryDataGrid handleSelect={handleSelect} />
+    <Flex>
+      <Container fluid p="lg" flex="1" style={{ position: "relative" }}>
+        <CountryDataGrid handleSelect={handleSelect} />
+      </Container>
+
       {selectedCountry && isDrawerOpen && (
         <InfoDrawer
           title={
@@ -93,7 +97,7 @@ function App() {
           </Stack>
         </InfoDrawer>
       )}
-    </div>
+    </Flex>
   );
 }
 

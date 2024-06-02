@@ -19,7 +19,6 @@ const FavouriteButton: FC<FavouriteButtonProps> = ({
 
   return (
     <button
-      id="favourite"
       name="favourite"
       className="icon-button"
       onClickCapture={(e) => onFavourite(e, countryCode)}
