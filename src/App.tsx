@@ -111,6 +111,7 @@ function App() {
           onClose={closeDrawer}
         >
           <Image
+            fit="contain"
             py="xs"
             src={`https://flagcdn.com/${selectedCountry.cca2.toLowerCase()}.svg`}
             alt={`${selectedCountry.name.common} flag`}

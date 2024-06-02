@@ -9,6 +9,13 @@
 
 .drawer-content {
   padding: 0 var(--mantine-spacing-md);
+
+  img {
+    height: 300px;
+    @media (max-width: 48em) {
+      height: 200px;
+    }
+  }
 }
 
 .drawer-title {
