@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { StarBorderIcon, YellowStarIcon } from "../icons";
-import { getSavedValue } from "../hooks/useLocalStorage";
+import { StarBorderIcon, YellowStarIcon } from "../../icons";
+import { getSavedValue } from "../../hooks/useLocalStorage";
 
 interface FavouriteButtonProps {
   country: string;

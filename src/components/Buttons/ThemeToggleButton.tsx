@@ -1,6 +1,6 @@
 import { useMantineColorScheme, ActionIcon } from "@mantine/core";
 import { FC } from "react";
-import { SunIcon, MoonIcon } from "../icons";
+import { SunIcon, MoonIcon } from "../../icons";
 
 interface ThemeToggleButtonProps {
   style?: React.CSSProperties;

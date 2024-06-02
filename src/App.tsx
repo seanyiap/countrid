@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import CountryDataGrid from "./components/CountryDataGrid";
+import CountryDataGrid from "./components/DataGrid/CountryDataGrid";
 import InfoDrawer from "./components/InfoDrawer/InfoDrawer";
 import { CountriesData } from "./types";
 import {
@@ -14,10 +14,10 @@ import {
   Text,
   SimpleGrid,
 } from "@mantine/core";
-import ThemeToggleButton from "./components/ThemeToggleButton";
+import ThemeToggleButton from "./components/Buttons/ThemeToggleButton";
 import Favourited from "./components/Cards/Favourited";
 import Viewed from "./components/Cards/Viewed";
-import FavouriteButton from "./components/FavouriteButton";
+import FavouriteButton from "./components/Buttons/FavouriteButton";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {

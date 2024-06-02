@@ -3,8 +3,8 @@ import { AgGridReact } from "ag-grid-react";
 import { ColDef, GridOptions, RowClickedEvent } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { CountriesData } from "../types";
-import FavouriteButton from "./FavouriteButton";
+import { CountriesData } from "../../types";
+import FavouriteButton from "../Buttons/FavouriteButton";
 import { useMantineColorScheme, Group } from "@mantine/core";
 
 const API_ENDPOINT = "https://restcountries.com/v3.1/all";
