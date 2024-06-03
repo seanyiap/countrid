@@ -129,25 +129,25 @@ function App() {
               <b>Region:</b> {selectedCountry.region}{" "}
               {selectedCountry.subregion && `(${selectedCountry.subregion})`}
             </Text>
-            <Text>
+            <Text component={"span"}>
               <b>Languages:</b>{" "}
               {selectedCountry.languages &&
               Object.values(selectedCountry.languages).length ? (
                 <List>
                   {Object.values(selectedCountry.languages).map((lang) => (
-                    <List.Item>{lang}</List.Item>
+                    <List.Item key={lang}>{lang}</List.Item>
                   ))}
                 </List>
               ) : (
                 "-"
               )}
             </Text>
-            <Text>
+            <Text component={"span"}>
               <b>Currencies:</b>{" "}
               {selectedCountry.currencies ? (
                 <List>
                   {Object.values(selectedCountry.currencies).map((currency) => (
-                    <List.Item>
+                    <List.Item key={currency!.symbol}>
                       {currency!.name} ({currency!.symbol})
                     </List.Item>
                   ))}
